@@ -17,42 +17,46 @@ class MessagingViewController: UIViewController {
     @IBOutlet var lastNameTextField: UITextField!
     @IBOutlet var windowSwitch: UISwitch!
     @IBOutlet var authenticationSwitch: UISwitch!
-    
+
     //MARK: - Properties
     private var windowSwitchValue: Bool {
         set {
             UserDefaults.standard.set(newValue, forKey: "WindowSwitch")
             UserDefaults.standard.synchronize()
         }
-        get { return UserDefaults.standard.bool(forKey: "WindowSwitch") }
+        get {
+            return UserDefaults.standard.bool(forKey: "WindowSwitch")
+        }
     }
-    
+
     private var authenticationSwitchValue: Bool {
         set {
             UserDefaults.standard.set(newValue, forKey: "AuthenticationSwitch")
             UserDefaults.standard.synchronize()
         }
-        get { return UserDefaults.standard.bool(forKey: "AuthenticationSwitch") }
+        get {
+            return UserDefaults.standard.bool(forKey: "AuthenticationSwitch")
+        }
     }
-    
+
     private var conversationViewController: ConversationViewController?
-    
+
     // Enter Your Code if using Autherization type 'Code'
     private let authenticationCode: String? = nil
-    
+
     // Enter Your JWT if using Autherization type 'Implicit'
     private let authenticationJWT: String? = nil
-    
+
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Enter Your Account Number
         self.accountTextField.text = "ENTER_ACCOUNT"
-        
+
         self.windowSwitch.isOn = windowSwitchValue
         self.authenticationSwitch.isOn = authenticationSwitchValue
-        
+
         LPMessaging.instance.delegate = self
         self.setSDKConfigurations()
         LPMessaging.instance.setLoggingLevel(level: .INFO)
@@ -62,34 +66,38 @@ class MessagingViewController: UIViewController {
     @IBAction func resignKeyboard() {
         self.view.endEditing(true)
     }
-    
+
     @IBAction func windowSwitchChanged(_ sender: UISwitch) {
         windowSwitchValue = sender.isOn
     }
-    
+
     @IBAction func authenticationSwitchChanged(_ sender: UISwitch) {
         authenticationSwitchValue = sender.isOn
     }
-    
+
     @IBAction func initSDKsClicked(_ sender: Any) {
-        defer { self.view.endEditing(true) }
-        
+        defer {
+            self.view.endEditing(true)
+        }
+
         guard let accountNumber = self.accountTextField.text, !accountNumber.isEmpty else {
             print("missing account number!")
             return
         }
-        
+
         initLPSDKwith(accountNumber: accountNumber)
     }
 
     @IBAction func showConversation() {
-        defer { self.view.endEditing(true) }
-        
+        defer {
+            self.view.endEditing(true)
+        }
+
         guard let accountNumber = self.accountTextField.text, !accountNumber.isEmpty else {
             print("missing account number!")
             return
         }
-        
+
         //Window Mode
         if windowSwitchValue {
             self.conversationViewController = nil
@@ -99,15 +107,15 @@ class MessagingViewController: UIViewController {
             self.conversationViewController?.accountNumber = accountNumber
             self.conversationViewController?.conversationQueryProtocol = LPMessaging.instance.getConversationBrandQuery(accountNumber)
         }
- 
+
         showConversationFor(accountNumber: accountNumber, authenticatedMode: authenticationSwitchValue)
-        
+
         //do not forget to push the controller (for ViewController Mode ONLY)
         if self.conversationViewController != nil {
             self.navigationController?.pushViewController(self.conversationViewController!, animated: true)
         }
     }
-    
+
     @IBAction func logoutClicked(_ sender: Any) {
         logoutLPSDK()
     }
@@ -126,40 +134,40 @@ extension MessagingViewController {
      */
     private func setSDKConfigurations() {
         let configurations = LPConfig.defaultConfiguration
-        
+
         /* the below  lets you enter a UIBarButton to the navigation bar (in window mode).
          When the button is pressed it will call the following delegate method: LPMessagingSDKCustomButtonTapped */
         configurations.customButtonImage = UIImage(named: "phone_icon")
     }
-    
+
     private func getUnreadMessageCount() {
         guard let accountNumber = self.accountTextField.text, !accountNumber.isEmpty else {
             print("missing account number!")
             return
         }
-        
+
         let conversationQuery = LPMessaging.instance.getConversationBrandQuery(accountNumber)
         LPMessaging.instance.getUnreadMessagesCount(conversationQuery, completion: { (count) in
-            print("unread message count: \(count)")
-        }) { (error) in
-            print("unread message count - error: \(error.localizedDescription)")
-        }
+                    print("unread message count: \(count)")
+                }) { (error) in
+                    print("unread message count - error: \(error.localizedDescription)")
+                }
     }
-    
+
     /**
      This method initialize the messaging SDK
      
      for more information on `initialize` see:
          https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-sdk-apis-messaging-api.html#initialize
      */
-    private func initLPSDKwith(accountNumber: String){
+    private func initLPSDKwith(accountNumber: String) {
         do {
             try LPMessaging.instance.initialize(accountNumber)
         } catch let error as NSError {
             print("initialize error: \(error)")
         }
     }
-    
+
     /**
      This method shows the conversation screen. It considers different modes:
      
@@ -177,59 +185,104 @@ extension MessagingViewController {
     private func showConversationFor(accountNumber: String, authenticatedMode: Bool) {
         //ConversationParamProtocol
         let conversationQuery = LPMessaging.instance.getConversationBrandQuery(accountNumber)
-        
+
         //LPConversationHistoryControlParam
         let controlParam = LPConversationHistoryControlParam(historyConversationsStateToDisplay: .all,
-                                                             historyConversationsMaxDays: -1,
-                                                             historyMaxDaysType: .startConversationDate)
+                historyConversationsMaxDays: -1,
+                historyMaxDaysType: .startConversationDate)
 
         //LPAuthenticationParams
         var authenticationParams: LPAuthenticationParams?
         if authenticatedMode {
             authenticationParams = LPAuthenticationParams(authenticationCode: authenticationCode,
-                                                          jwt: authenticationJWT,
-                                                          redirectURI: nil,
-                                                          certPinningPublicKeys: nil,
-                                                          authenticationType: .authenticated)
+                    jwt: authenticationJWT,
+                    redirectURI: nil,
+                    certPinningPublicKeys: nil,
+                    authenticationType: .authenticated)
         }
-        
+
         // update Account number and ConversationQuery (for ViewController Mode ONLY)
         if self.conversationViewController != nil {
             self.conversationViewController?.accountNumber = accountNumber
             self.conversationViewController?.conversationQueryProtocol = conversationQuery
         }
-        
-        //LPWelcomeMessageParam
-        let welcomeMessageParam = LPWelcomeMessage(message: "Hi", frequency: .FirstTimeConversation)
 
-//        let welcomeMessageOptions = [
-//            LPWelcomeMessageOption(value: "My latest bill statement", displayName: "1️⃣ Bill"),
-//            LPWelcomeMessageOption(value: "A recent order placed", displayName: "2️⃣ Orders"),
-//            LPWelcomeMessageOption(value: "Technical support", displayName: "3️⃣ Support"),
-//            LPWelcomeMessageOption(value: "Account information", displayName: "4️⃣ Account")
-//        ]
-//
-//        do {
-//            try welcomeMessageParam.set(options: welcomeMessageOptions)
-//        }
-//        catch {
-//            print("cannot set welcome message options | error: \(error.localizedDescription)")
-//        }
-//
-//        welcomeMessageParam.set(NumberOfOptionsPerRow: 2)
-        
+        //LPWelcomeMessageParam
+        let lpWelcomeText = "Hello! I'm a UnitedHealthcare virtual assistant here to get you started. How can I help you today?"
+        let welcomeMessageParam = LPWelcomeMessage(message: lpWelcomeText, frequency: .FirstTimeConversation)
+
+        let welcomeMessageOptions = [
+            LPWelcomeMessageOption(value: "COVID-19 Resources", displayName: "COVID-19 Resources"),
+            LPWelcomeMessageOption(value: "Benefits", displayName: "Benefits"),
+            LPWelcomeMessageOption(value: "Claims", displayName: "Claims"),
+            LPWelcomeMessageOption(value: "Find a Provider", displayName: "Find a Provider"),
+            LPWelcomeMessageOption(value: "Something Else", displayName: "Something Else"),
+        ]
+
+        do {
+            try welcomeMessageParam.set(options: welcomeMessageOptions)
+        } catch {
+            print("cannot set welcome message options | error: \(error.localizedDescription)")
+        }
+
+        welcomeMessageParam.set(NumberOfOptionsPerRow: 1)
+
         //LPConversationViewParams
         let conversationViewParams = LPConversationViewParams(conversationQuery: conversationQuery,
-                                                              containerViewController: self.conversationViewController,
-                                                              isViewOnly: false,
-                                                              conversationHistoryControlParam: controlParam,
-                                                              welcomeMessage: welcomeMessageParam)
-        
+                containerViewController: self.conversationViewController,
+                isViewOnly: false,
+                conversationHistoryControlParam: controlParam,
+                welcomeMessage: welcomeMessageParam)
+
+
+        let config = LPConfig.defaultConfiguration
+
+        // general
+        config.conversationBackgroundColor = UIColor.white
+        config.isReadReceiptTextMode = true
+
+        // conversation separator
+        config.enableConversationSeparatorLine = true
+        config.enableConversationSeparatorLineOnAutoClose = true
+        config.enableConversationSeparatorTextMessage = true
+        config.conversationSeparatorTextColor = getColor(r: 51, g: 51, b: 51)
+
+        // remote user bubble
+        config.remoteUserBubbleBackgroundColor = getColor(r: 243, g: 243, b: 243)
+        config.remoteUserBubbleBorderColor = getColor(r: 243, g: 243, b: 243)
+        config.remoteUserBubbleTextColor = getColor(r: 31, g: 31, b: 31)
+        config.remoteUserTypingTintColor = getColor(r: 0, g: 38, b: 119)
+
+        // user bubble
+        config.userBubbleTextColor = getColor(r: 31, g: 31, b: 31)
+        config.userBubbleBorderColor = getColor(r: 204, g: 204, b: 204)
+        config.userBubbleBackgroundColor = UIColor.white
+
+        // title bar
+        config.brandName = "Help Chat"
+        config.conversationNavigationBackgroundColor = getColor(r: 0, g: 38, b: 119)
+        config.conversationNavigationTitleColor = getColor(r: 0, g: 38, b: 119)
+        config.customButtonImage = nil
+
+        // input text
+        config.inputTextViewContainerBackgroundColor = getGrey(color: 242)
+        config.inputTextViewTopBorderColor = getColor(r: 204, g: 204, b: 204)
+
+        // config.quickReplyButtonBorderWidth = 20.0
+
         LPMessaging.instance.showConversation(conversationViewParams, authenticationParams: authenticationParams)
 
         self.setUserDetails()
     }
-    
+
+    private func getGrey(color: Int) -> UIColor {
+        return getColor(r: color, g: color, b: color)
+    }
+
+    private func getColor(r: Int, g: Int, b: Int) -> UIColor {
+        return UIColor.init(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1)
+    }
+
     /**
      This method sets the user details such as first name, last name, profile image and phone number.
      
@@ -238,15 +291,15 @@ extension MessagingViewController {
      */
     private func setUserDetails() {
         let user = LPUser(firstName: self.firstNameTextField.text!,
-                          lastName: self.lastNameTextField.text!,
-                          nickName: "my nick name",
-                          uid: nil,
-                          profileImageURL: "http://www.mrbreakfast.com/ucp/342_6053_ucp.jpg",
-                          phoneNumber: nil,
-                          employeeID: "1111-1111")
+                lastName: self.lastNameTextField.text!,
+                nickName: "my nick name",
+                uid: nil,
+                profileImageURL: "http://www.mrbreakfast.com/ucp/342_6053_ucp.jpg",
+                phoneNumber: nil,
+                employeeID: "1111-1111")
         LPMessaging.instance.setUserProfile(user, brandID: self.accountTextField.text!)
     }
-    
+
     /**
      This method logouts from Monitoring and Messaging SDKs - all the data will be cleared
      
@@ -255,10 +308,10 @@ extension MessagingViewController {
      */
     private func logoutLPSDK() {
         LPMessaging.instance.logout(unregisterType: .all, completion: {
-            print("successfully logout from MessagingSDK")
-        }) { (errors) in
-            print("failed to logout from MessagingSDK - error: \(errors)")
-        }
+                    print("successfully logout from MessagingSDK")
+                }) { (errors) in
+                    print("failed to logout from MessagingSDK - error: \(errors)")
+                }
     }
 }
 
@@ -269,7 +322,7 @@ extension MessagingViewController {
      https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-sdk-apis-callbacks-index.html#lpmessagingsdkdelegate
  */
 extension MessagingViewController: LPMessagingSDKdelegate {
-    
+
     /**
     This delegate method is required.
     It is called when authentication process fails
@@ -277,7 +330,7 @@ extension MessagingViewController: LPMessagingSDKdelegate {
     func LPMessagingSDKAuthenticationFailed(_ error: NSError) {
         NSLog("Error: \(error)")
     }
-    
+
     /**
     This delegate method is required.
     It is called when the SDK version you're using is obselete and needs an update.
@@ -285,7 +338,7 @@ extension MessagingViewController: LPMessagingSDKdelegate {
     func LPMessagingSDKObseleteVersion(_ error: NSError) {
         NSLog("Error: \(error)")
     }
-    
+
     /**
     This delegate method is optional.
     It is called each time the SDK receives info about the agent on the other side.
@@ -294,52 +347,54 @@ extension MessagingViewController: LPMessagingSDKdelegate {
     You can use this data to show the agent details on your navigation bar (in view controller mode)
     */
     func LPMessagingSDKAgentDetails(_ agent: LPUser?) {
-        guard self.conversationViewController != nil else { return }
+        guard self.conversationViewController != nil else {
+            return
+        }
 
         let name: String = agent?.nickName ?? ""
         self.conversationViewController?.title = name
     }
-    
+
     /**
     This delegate method is optional.
     It is called each time the SDK menu is opened/closed.
     */
     func LPMessagingSDKActionsMenuToggled(_ toggled: Bool) {
-        
+
     }
-    
+
     /**
     This delegate method is optional.
     It is called each time the agent typing state changes.
     */
     func LPMessagingSDKAgentIsTypingStateChanged(_ isTyping: Bool) {
-        
+
     }
-    
+
     /**
     This delegate method is optional.
     It is called after the customer satisfaction page is submitted with a score.
     */
     func LPMessagingSDKCSATScoreSubmissionDidFinish(_ accountID: String, rating: Int) {
-    
+
     }
-    
+
     /**
     This delegate method is optional.
     If you set a custom button, this method will be called when the custom button is clicked.
     */
     func LPMessagingSDKCustomButtonTapped() {
-        
+
     }
-    
+
     /**
     This delegate method is optional.
     It is called whenever an event log is received.
     */
     func LPMessagingSDKDidReceiveEventLog(_ eventLog: String) {
-        
+
     }
-    
+
     /**
     This delegate method is optional.
     It is called when the SDK has connections issues.
@@ -355,7 +410,7 @@ extension MessagingViewController: LPMessagingSDKdelegate {
     func LPMessagingSDKTokenExpired(_ brandID: String) {
         NSLog("LPMessagingSDKTokenExpired")
     }
-    
+
     /**
      This delegate method is required.
      It lets you know if there is an error with the sdk and what this error is
@@ -363,77 +418,77 @@ extension MessagingViewController: LPMessagingSDKdelegate {
     func LPMessagingSDKError(_ error: NSError) {
         NSLog("Error: \(error)")
     }
-    
+
     /**
      This delegate method is optional.
      It is called when the conversation view controller removed from its container view controller or window.
      */
     func LPMessagingSDKConversationViewControllerDidDismiss() {
-        
+
     }
-    
+
     /**
      This delegate method is optional.
      It is called when a new conversation has started, from the agent or from the consumer side.
      */
     func LPMessagingSDKConversationStarted(_ conversationID: String?) {
-        
+
     }
-    
+
     /**
      This delegate method is optional.
      It is called when a conversation has ended, from the agent or from the consumer side.
      */
     func LPMessagingSDKConversationEnded(_ conversationID: String?) {
-        
+
     }
-    
+
     /**
      This delegate method is optional.
      It is called when the customer satisfaction survey is dismissed after the user has submitted the survey/
      */
     func LPMessagingSDKConversationCSATDismissedOnSubmittion(_ conversationID: String?) {
-        
+
     }
-    
+
     /**
      This delegate method is optional.
      It is called each time connection state changed for a brand with a flag whenever connection is ready.
      Ready means that all conversations and messages were synced with the server.
      */
     func LPMessagingSDKConnectionStateChanged(_ isReady: Bool, brandID: String) {
-        
+
     }
-    
+
     /**
      This delegate method is optional.
      It is called when the user tapped on the agent’s avatar in the conversation and also in the navigation bar within window mode.
      */
     func LPMessagingSDKAgentAvatarTapped(_ agent: LPUser?) {
-        
+
     }
-    
+
     /**
      This delegate method is optional.
      It is called when the Conversation CSAT did load
     */
     func LPMessagingSDKConversationCSATDidLoad(_ conversationID: String?) {
-        
+
     }
-    
+
     /**
      This delegate method is optional.
      It is called when the Conversation CSAT skipped by the consumer
      */
     func LPMessagingSDKConversationCSATSkipped(_ conversationID: String?) {
-        
+
     }
-    
+
     /**
      This delegate method is optional.
      It is called when the user is opening photo sharing gallery/camera and the persmissions denied
     */
     func LPMessagingSDKUserDeniedPermission(_ permissionType: LPPermissionTypes) {
-        
+
     }
 }
