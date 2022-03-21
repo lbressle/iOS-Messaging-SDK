@@ -255,7 +255,6 @@ extension MessagingViewController {
 
         // agent avatar
         config.remoteUserAvatarIconColor = getColor(r: 0, g: 38, b: 119)
-        config.remoteUserDefaultAvatarImage = UIImage(named: "UHC_Logo")
         config.remoteUserAvatarBackgroundColor = UIColor.white
 
         // user bubble
