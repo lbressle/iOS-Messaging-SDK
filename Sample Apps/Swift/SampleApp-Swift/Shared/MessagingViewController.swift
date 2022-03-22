@@ -135,18 +135,15 @@ extension MessagingViewController {
     private func setSDKConfigurations() {
         let configurations = LPConfig.defaultConfiguration
 
-        let brandBlueColor = getColor(r: 0, g: 38, b: 119)
+        let uhcBlue = getColor(r: 0, g: 38, b: 119)
 
         // general
         configurations.conversationBackgroundColor = UIColor.white
         configurations.isReadReceiptTextMode = true
-        configurations.showAgentTypingInMessageBubble = true
         configurations.customFontNameConversationFeed = "SF Pro Text"
 
         // conversation separator
-        configurations.enableConversationSeparatorLine = true
         configurations.enableConversationSeparatorLineOnAutoClose = true
-        configurations.enableConversationSeparatorTextMessage = true
         configurations.conversationSeparatorTextColor = getColor(r: 204, g: 204, b: 204)//getColor(r: 51, g: 51, b: 51)
 
         // remote user bubble
@@ -158,7 +155,7 @@ extension MessagingViewController {
         configurations.remoteUserBubbleBottomLeftCornerRadius = 8
 
         //remote user typing bubble
-        configurations.remoteUserTypingTintColor = brandBlueColor
+        configurations.remoteUserTypingTintColor = uhcBlue
 
         // agent avatar
         configurations.remoteUserAvatarIconColor = getColor(r: 0, g: 38, b: 119)
@@ -181,7 +178,7 @@ extension MessagingViewController {
 
         // title bar
         configurations.brandName = "Help Chat"
-        configurations.conversationNavigationBackgroundColor = getColor(r: 0, g: 38, b: 119)
+        configurations.conversationNavigationBackgroundColor = uhcBlue
         configurations.conversationNavigationTitleColor = UIColor.white
         configurations.lpNavigationBarLeftItemImageButton = UIImage() // TODO: add back icon
         configurations.lpNavigationBarRightItemImageButton = UIImage() // TODO: add ... icon
@@ -192,12 +189,36 @@ extension MessagingViewController {
         configurations.inputTextViewCornerRadius = 4
         configurations.isSendMessageButtonInTextMode = false
         //config.sendButtonImage = UIImage() // TODO: add send icon
-        configurations.sendButtonEnabledColor = getColor(r: 0, g: 38, b: 119)
+        configurations.sendButtonEnabledColor = uhcBlue
+        
+        // file and photo sharing
         configurations.fileSharingFromConsumer = true
-
+        configurations.photosharingMenuBackgroundColor = uhcBlue
+        configurations.photosharingMenuButtonsTintColor = uhcBlue
+        configurations.cameraButtonEnabledColor = uhcBlue
+        configurations.photosharingMenuButtonsTextColor = UIColor.white
+        configurations.photosharingMenuButtonsBackgroundColor = UIColor.white
+        
+        // link preview
+        configurations.linkPreviewBackgroundColor = UIColor.white
+        configurations.urlRealTimePreviewBackgroundColor = UIColor.white
+        
+        // scroll to bottom
+        configurations.scrollToBottomButtonBackgroundColor = uhcBlue
+        configurations.scrollToBottomButtonMessagePreviewTextColor = UIColor.white
+        configurations.scrollToBottomButtonArrowColor = UIColor.white
+        
         /* the below  lets you enter a UIBarButton to the navigation bar (in window mode).
          When the button is pressed it will call the following delegate method: LPMessagingSDKCustomButtonTapped */
         configurations.customButtonImage = UIImage(named: "phone_icon")
+    }
+    
+    private func getGrey(color: Int) -> UIColor {
+        return getColor(r: color, g: color, b: color)
+    }
+
+    private func getColor(r: Int, g: Int, b: Int) -> UIColor {
+        return UIColor.init(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1)
     }
 
     private func getUnreadMessageCount() {
@@ -298,15 +319,6 @@ extension MessagingViewController {
 
         self.setUserDetails()
     }
-
-    private func getGrey(color: Int) -> UIColor {
-        return getColor(r: color, g: color, b: color)
-    }
-
-    private func getColor(r: Int, g: Int, b: Int) -> UIColor {
-        return UIColor.init(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1)
-    }
-
     /**
      This method sets the user details such as first name, last name, profile image and phone number.
 
