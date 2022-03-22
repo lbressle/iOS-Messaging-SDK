@@ -135,6 +135,66 @@ extension MessagingViewController {
     private func setSDKConfigurations() {
         let configurations = LPConfig.defaultConfiguration
 
+        let brandBlueColor = getColor(r: 0, g: 38, b: 119)
+
+        // general
+        configurations.conversationBackgroundColor = UIColor.white
+        configurations.isReadReceiptTextMode = true
+        configurations.showAgentTypingInMessageBubble = true
+        configurations.customFontNameConversationFeed = "SF Pro Text"
+
+        // conversation separator
+        configurations.enableConversationSeparatorLine = true
+        configurations.enableConversationSeparatorLineOnAutoClose = true
+        configurations.enableConversationSeparatorTextMessage = true
+        configurations.conversationSeparatorTextColor = getColor(r: 204, g: 204, b: 204)//getColor(r: 51, g: 51, b: 51)
+
+        // remote user bubble
+        configurations.remoteUserBubbleBackgroundColor = getColor(r: 243, g: 243, b: 243)
+        configurations.remoteUserBubbleBorderColor = getColor(r: 243, g: 243, b: 243)
+        configurations.remoteUserBubbleTextColor = getColor(r: 51, g: 51, b: 51)
+        configurations.remoteUserTypingTintColor = getColor(r: 0, g: 38, b: 119)
+        configurations.remoteUserBubbleHyperlinkColor = getColor(r: 25, g: 110, b: 207)
+        configurations.remoteUserBubbleBottomLeftCornerRadius = 8
+
+        //remote user typing bubble
+        configurations.remoteUserTypingTintColor = brandBlueColor
+
+        // agent avatar
+        configurations.remoteUserAvatarIconColor = getColor(r: 0, g: 38, b: 119)
+        configurations.remoteUserAvatarBackgroundColor = UIColor.white
+
+        // brand avatar
+        configurations.brandAvatarImage = UIImage(named: "UHC_Logo")
+
+        // user bubble
+        configurations.userBubbleTextColor = getColor(r: 31, g: 31, b: 31)
+        configurations.userBubbleBorderColor = getColor(r: 204, g: 204, b: 204)
+        configurations.userBubbleBackgroundColor = UIColor.white
+        configurations.userBubbleLinkColor = getColor(r: 25, g: 110, b: 207)
+        configurations.userBubbleBottomRightCornerRadius = 8
+
+        // timestamps
+        configurations.messageStatusNumericTimestampOnly = true
+        configurations.userBubbleTimestampColor = getColor(r: 90, g: 90, b: 90)
+        configurations.remoteUserBubbleTimestampColor = getColor(r: 90, g: 90, b: 90)
+
+        // title bar
+        configurations.brandName = "Help Chat"
+        configurations.conversationNavigationBackgroundColor = getColor(r: 0, g: 38, b: 119)
+        configurations.conversationNavigationTitleColor = UIColor.white
+        configurations.lpNavigationBarLeftItemImageButton = UIImage() // TODO: add back icon
+        configurations.lpNavigationBarRightItemImageButton = UIImage() // TODO: add ... icon
+
+        // input text box
+        configurations.inputTextViewContainerBackgroundColor = getGrey(color: 242)
+        configurations.inputTextViewTopBorderColor = getColor(r: 204, g: 204, b: 204)
+        configurations.inputTextViewCornerRadius = 4
+        configurations.isSendMessageButtonInTextMode = false
+        //config.sendButtonImage = UIImage() // TODO: add send icon
+        configurations.sendButtonEnabledColor = getColor(r: 0, g: 38, b: 119)
+        configurations.fileSharingFromConsumer = true
+
         /* the below  lets you enter a UIBarButton to the navigation bar (in window mode).
          When the button is pressed it will call the following delegate method: LPMessagingSDKCustomButtonTapped */
         configurations.customButtonImage = UIImage(named: "phone_icon")
@@ -233,49 +293,6 @@ extension MessagingViewController {
                 isViewOnly: false,
                 conversationHistoryControlParam: controlParam,
                 welcomeMessage: welcomeMessageParam)
-
-
-        let config = LPConfig.defaultConfiguration
-
-        // general
-        config.conversationBackgroundColor = UIColor.white
-        config.isReadReceiptTextMode = true
-
-        // conversation separator
-        config.enableConversationSeparatorLine = true
-        config.enableConversationSeparatorLineOnAutoClose = true
-        config.enableConversationSeparatorTextMessage = true
-        config.conversationSeparatorTextColor = getColor(r: 51, g: 51, b: 51)
-
-        // agent bubble
-        config.remoteUserBubbleBackgroundColor = getColor(r: 243, g: 243, b: 243)
-        config.remoteUserBubbleBorderColor = getColor(r: 243, g: 243, b: 243)
-        config.remoteUserBubbleTextColor = getColor(r: 51, g: 51, b: 51)
-        config.remoteUserTypingTintColor = getColor(r: 0, g: 38, b: 119)
-
-        // agent avatar
-        config.remoteUserAvatarIconColor = getColor(r: 0, g: 38, b: 119)
-        config.remoteUserAvatarBackgroundColor = UIColor.white
-
-        // user bubble
-        config.userBubbleTextColor = getColor(r: 31, g: 31, b: 31)
-        config.userBubbleBorderColor = getColor(r: 204, g: 204, b: 204)
-        config.userBubbleBackgroundColor = UIColor.white
-
-        // title bar
-        config.brandName = "Help Chat"
-        config.conversationNavigationBackgroundColor = getColor(r: 0, g: 38, b: 119)
-        config.conversationNavigationTitleColor = getColor(r: 0, g: 38, b: 119)
-        config.customButtonImage = nil
-
-        // brand avatar
-        config.brandAvatarImage = UIImage(named: "UHC_Logo")
-
-        // input text
-        config.inputTextViewContainerBackgroundColor = getGrey(color: 242)
-        config.inputTextViewTopBorderColor = getColor(r: 204, g: 204, b: 204)
-
-        // config.quickReplyButtonBorderWidth = 20.0
 
         LPMessaging.instance.showConversation(conversationViewParams, authenticationParams: authenticationParams)
 
