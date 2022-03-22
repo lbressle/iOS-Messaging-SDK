@@ -134,9 +134,7 @@ extension MessagingViewController {
      */
     private func setSDKConfigurations() {
         let configurations = LPConfig.defaultConfiguration
-        
-        let brandBlueColor = getColor(r: 0, g: 38, b: 119)
-        
+            
         // general
         configurations.conversationBackgroundColor = UIColor.white
         configurations.isReadReceiptTextMode = true
@@ -159,7 +157,7 @@ extension MessagingViewController {
         configurations.remoteUserBubbleBottomLeftCornerRadius = 8
         
         //remote user typing bubble
-        configurations.remoteUserTypingTintColor = brandBlueColor
+        configurations.remoteUserTypingTintColor = getColor(r: 0, g: 38, b: 119)
 
         // user bubble
         configurations.userBubbleTextColor = getColor(r: 31, g: 31, b: 31)
