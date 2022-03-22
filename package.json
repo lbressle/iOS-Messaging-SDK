@@ -1,0 +1,7 @@
+{
+  "name": "iOS-Messaging-SDK",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/lbressle/iOS-Messaging-SDK.git",
+  "license": "MIT"
+}
