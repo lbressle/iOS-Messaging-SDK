@@ -190,7 +190,7 @@ extension MessagingViewController {
         configurations.isSendMessageButtonInTextMode = false
         //config.sendButtonImage = UIImage() // TODO: add send icon
         configurations.sendButtonEnabledColor = uhcBlue
-        
+
         // file and photo sharing
         configurations.fileSharingFromConsumer = true
         configurations.photosharingMenuBackgroundColor = uhcBlue
@@ -198,21 +198,21 @@ extension MessagingViewController {
         configurations.cameraButtonEnabledColor = uhcBlue
         configurations.photosharingMenuButtonsTextColor = UIColor.white
         configurations.photosharingMenuButtonsBackgroundColor = UIColor.white
-        
+
         // link preview
         configurations.linkPreviewBackgroundColor = UIColor.white
         configurations.urlRealTimePreviewBackgroundColor = UIColor.white
-        
+
         // scroll to bottom
         configurations.scrollToBottomButtonBackgroundColor = uhcBlue
         configurations.scrollToBottomButtonMessagePreviewTextColor = UIColor.white
         configurations.scrollToBottomButtonArrowColor = UIColor.white
-        
+
         /* the below  lets you enter a UIBarButton to the navigation bar (in window mode).
          When the button is pressed it will call the following delegate method: LPMessagingSDKCustomButtonTapped */
         configurations.customButtonImage = UIImage(named: "phone_icon")
     }
-    
+
     private func getGrey(color: Int) -> UIColor {
         return getColor(r: color, g: color, b: color)
     }
