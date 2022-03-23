@@ -52,7 +52,7 @@ class MessagingViewController: UIViewController {
         super.viewDidLoad()
 
         // Enter Your Account Number
-        self.accountTextField.text = "ENTER_ACCOUNT"
+        self.accountTextField.text = "74782401"
 
         self.windowSwitch.isOn = windowSwitchValue
         self.authenticationSwitch.isOn = authenticationSwitchValue
@@ -125,28 +125,27 @@ class MessagingViewController: UIViewController {
 extension MessagingViewController {
     /**
      This method sets the SDK configurations.
-     
+
      For example:
          Change background color of remote user (such as Agent)
          Change background color of user (such as Consumer)
-     
+
     for more information on `defaultConfiguration` see: https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-customization-and-branding-customizing-the-sdk.html
      */
     private func setSDKConfigurations() {
         let configurations = LPConfig.defaultConfiguration
-            
+
+        let uhcBlue = getColor(r: 0, g: 38, b: 119)
+
         // general
         configurations.conversationBackgroundColor = UIColor.white
         configurations.isReadReceiptTextMode = true
-        configurations.showAgentTypingInMessageBubble = true
-        configurations.customFontNameConversationFeed = "SF Pro Text"
-        
+        configurations.customFontNameConversationFeed = "SFProText-Regular"
 
         // conversation separator
-        configurations.enableConversationSeparatorLine = true
         configurations.enableConversationSeparatorLineOnAutoClose = true
-        configurations.enableConversationSeparatorTextMessage = true
-        configurations.conversationSeparatorTextColor = getColor(r: 204, g: 204, b: 204)//getColor(r: 51, g: 51, b: 51)
+        configurations.conversationSeparatorTextColor = getColor(r: 204, g: 204, b: 204)
+        configurations.conversationSeparatorFontName = "SFProText-Semibold"
 
         // remote user bubble
         configurations.remoteUserBubbleBackgroundColor = getColor(r: 243, g: 243, b: 243)
@@ -155,9 +154,16 @@ extension MessagingViewController {
         configurations.remoteUserTypingTintColor = getColor(r: 0, g: 38, b: 119)
         configurations.remoteUserBubbleHyperlinkColor = getColor(r: 25, g: 110, b: 207)
         configurations.remoteUserBubbleBottomLeftCornerRadius = 8
-        
+
         //remote user typing bubble
-        configurations.remoteUserTypingTintColor = getColor(r: 0, g: 38, b: 119)
+        configurations.remoteUserTypingTintColor = uhcBlue
+
+        // agent avatar
+        configurations.remoteUserAvatarIconColor = getColor(r: 0, g: 38, b: 119)
+        configurations.remoteUserAvatarBackgroundColor = UIColor.white
+
+        // brand avatar
+        configurations.brandAvatarImage = UIImage(named: "UHC_Logo")
 
         // user bubble
         configurations.userBubbleTextColor = getColor(r: 31, g: 31, b: 31)
@@ -165,7 +171,7 @@ extension MessagingViewController {
         configurations.userBubbleBackgroundColor = UIColor.white
         configurations.userBubbleLinkColor = getColor(r: 25, g: 110, b: 207)
         configurations.userBubbleBottomRightCornerRadius = 8
-        
+
         // timestamps
         configurations.messageStatusNumericTimestampOnly = true
         configurations.userBubbleTimestampColor = getColor(r: 90, g: 90, b: 90)
@@ -173,7 +179,7 @@ extension MessagingViewController {
 
         // title bar
         configurations.brandName = "Help Chat"
-        configurations.conversationNavigationBackgroundColor = getColor(r: 0, g: 38, b: 119)
+        configurations.conversationNavigationBackgroundColor = uhcBlue
         configurations.conversationNavigationTitleColor = UIColor.white
         configurations.lpNavigationBarLeftItemImageButton = UIImage() // TODO: add back icon
         configurations.lpNavigationBarRightItemImageButton = UIImage() // TODO: add ... icon
@@ -183,13 +189,39 @@ extension MessagingViewController {
         configurations.inputTextViewTopBorderColor = getColor(r: 204, g: 204, b: 204)
         configurations.inputTextViewCornerRadius = 4
         configurations.isSendMessageButtonInTextMode = false
-        //config.sendButtonImage = UIImage() // TODO: add send icon
-        configurations.sendButtonEnabledColor = getColor(r: 0, g: 38, b: 119)
+        //configurations.sendButtonImage = UIImage() // TODO: add send icon
+        configurations.sendButtonEnabledColor = uhcBlue
+
+        // file and photo sharing
         configurations.fileSharingFromConsumer = true
+        configurations.photosharingMenuBackgroundColor = uhcBlue
+        configurations.photosharingMenuButtonsTintColor = uhcBlue
+        configurations.cameraButtonEnabledColor = uhcBlue
+        configurations.photosharingMenuButtonsTextColor = UIColor.white
+        configurations.photosharingMenuButtonsBackgroundColor = UIColor.white
+        //configurations.photoSharingOpenMenuImageButton = UIImage() // TODO: add paperclip icon
+        
+
+        // link preview
+        configurations.linkPreviewBackgroundColor = UIColor.white
+        configurations.urlRealTimePreviewBackgroundColor = UIColor.white
+
+        // scroll to bottom
+        configurations.scrollToBottomButtonBackgroundColor = uhcBlue
+        configurations.scrollToBottomButtonMessagePreviewTextColor = UIColor.white
+        configurations.scrollToBottomButtonArrowColor = UIColor.white
 
         /* the below  lets you enter a UIBarButton to the navigation bar (in window mode).
          When the button is pressed it will call the following delegate method: LPMessagingSDKCustomButtonTapped */
         configurations.customButtonImage = UIImage(named: "phone_icon")
+    }
+
+    private func getGrey(color: Int) -> UIColor {
+        return getColor(r: color, g: color, b: color)
+    }
+
+    private func getColor(r: Int, g: Int, b: Int) -> UIColor {
+        return UIColor.init(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1)
     }
 
     private func getUnreadMessageCount() {
@@ -208,7 +240,7 @@ extension MessagingViewController {
 
     /**
      This method initialize the messaging SDK
-     
+
      for more information on `initialize` see:
          https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-sdk-apis-messaging-api.html#initialize
      */
@@ -222,15 +254,15 @@ extension MessagingViewController {
 
     /**
      This method shows the conversation screen. It considers different modes:
-     
+
      Window Mode:
      - Window           - Shows the conversation screen in a new window created by the SDK. Navigation bar is included.
      - View controller  - Shows the conversation screen in a view controller of your choice.
-     
+
      Authentication Mode:
      - Authenticated    - Conversation history is saved and shown.
      - Unauthenticated  - Conversation starts clean every time.
-     
+
      for more information on `showconversation` see:
          https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-sdk-apis-messaging-api.html#showconversation
      */
@@ -261,7 +293,7 @@ extension MessagingViewController {
 
         //LPWelcomeMessageParam
         let lpWelcomeText = "Hello! I'm a UnitedHealthcare virtual assistant here to get you started. How can I help you today?"
-        let welcomeMessageParam = LPWelcomeMessage(message: lpWelcomeText, frequency: .FirstTimeConversation)
+        let welcomeMessageParam = LPWelcomeMessage(message: lpWelcomeText, frequency: .everyConversation)
 
         let welcomeMessageOptions = [
             LPWelcomeMessageOption(value: "COVID-19 Resources", displayName: "COVID-19 Resources"),
@@ -277,7 +309,7 @@ extension MessagingViewController {
             print("cannot set welcome message options | error: \(error.localizedDescription)")
         }
 
-        welcomeMessageParam.set(NumberOfOptionsPerRow: 1)
+        welcomeMessageParam.set(NumberOfOptionsPerRow: 2)
 
         //LPConversationViewParams
         let conversationViewParams = LPConversationViewParams(conversationQuery: conversationQuery,
@@ -290,24 +322,15 @@ extension MessagingViewController {
 
         self.setUserDetails()
     }
-
-    private func getGrey(color: Int) -> UIColor {
-        return getColor(r: color, g: color, b: color)
-    }
-
-    private func getColor(r: Int, g: Int, b: Int) -> UIColor {
-        return UIColor.init(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1)
-    }
-
     /**
      This method sets the user details such as first name, last name, profile image and phone number.
-     
+
      for more info on `setUserProfile` see:
          https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-sdk-apis-messaging-api.html#setuserprofile
      */
     private func setUserDetails() {
-        let user = LPUser(firstName: self.firstNameTextField.text!,
-                lastName: self.lastNameTextField.text!,
+        let user = LPUser(firstName: "Johnny",
+                lastName: "S",
                 nickName: "my nick name",
                 uid: nil,
                 profileImageURL: "http://www.mrbreakfast.com/ucp/342_6053_ucp.jpg",
@@ -318,7 +341,7 @@ extension MessagingViewController {
 
     /**
      This method logouts from Monitoring and Messaging SDKs - all the data will be cleared
-     
+
      for more info on `logout` see:
          https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-methods-logout.html
      */
@@ -358,7 +381,7 @@ extension MessagingViewController: LPMessagingSDKdelegate {
     /**
     This delegate method is optional.
     It is called each time the SDK receives info about the agent on the other side.
-    
+
     Example:
     You can use this data to show the agent details on your navigation bar (in view controller mode)
     */
