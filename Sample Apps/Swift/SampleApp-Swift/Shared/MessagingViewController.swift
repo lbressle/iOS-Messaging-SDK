@@ -134,7 +134,7 @@ extension MessagingViewController {
      */
     private func setSDKConfigurations() {
         let configurations = LPConfig.defaultConfiguration
-        
+
         print("CONFIGS: ",  LPConfig.printAllConfigurations())
 
         let uhcBlue = getColor(r: 0, g: 38, b: 119)
@@ -183,16 +183,15 @@ extension MessagingViewController {
         configurations.brandName = "Help Chat"
         configurations.conversationNavigationBackgroundColor = uhcBlue
         configurations.conversationNavigationTitleColor = UIColor.white
-        configurations.conversationStatusBarStyle = UIStatusBarStyle.lightContent
-        // configurations.lpNavigationBarLeftItemImageButton = UIImage() // TODO: add back icon
-        // configurations.lpNavigationBarRightItemImageButton = UIImage() // TODO: add ... icon
+        configurations.lpNavigationBarLeftItemImageButton = UIImage(named: "back_icon")
+        //configurations.lpNavigationBarRightItemImageButton = UIImage() // TODO: add ... icon
 
         // input text box
         configurations.inputTextViewContainerBackgroundColor = getGrey(color: 242)
         configurations.inputTextViewTopBorderColor = getColor(r: 204, g: 204, b: 204)
         configurations.inputTextViewCornerRadius = 4
         configurations.isSendMessageButtonInTextMode = false
-        //configurations.sendButtonImage = UIImage() // TODO: add send icon
+        configurations.sendButtonImage = UIImage(named: "send_icon")
         configurations.sendButtonEnabledColor = uhcBlue
 
         // file and photo sharing
