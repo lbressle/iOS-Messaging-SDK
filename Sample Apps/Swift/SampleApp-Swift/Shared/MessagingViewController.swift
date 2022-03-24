@@ -192,7 +192,7 @@ extension MessagingViewController {
         configurations.inputTextViewCornerRadius = 4
         configurations.isSendMessageButtonInTextMode = false
         configurations.sendButtonImage = UIImage(named: "send_icon")
-        configurations.sendButtonEnabledColor = uhcBlue
+//        configurations.sendButtonEnabledColor = uhcBlue
 
         // file and photo sharing
         configurations.fileSharingFromConsumer = true
