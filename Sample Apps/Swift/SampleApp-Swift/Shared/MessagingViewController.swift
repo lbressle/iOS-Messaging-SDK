@@ -181,15 +181,15 @@ extension MessagingViewController {
         configurations.brandName = "Help Chat"
         configurations.conversationNavigationBackgroundColor = uhcBlue
         configurations.conversationNavigationTitleColor = UIColor.white
-        configurations.lpNavigationBarLeftItemImageButton = UIImage() // TODO: add back icon
-        configurations.lpNavigationBarRightItemImageButton = UIImage() // TODO: add ... icon
+        configurations.lpNavigationBarLeftItemImageButton = UIImage(named: "back_icon")
+        //configurations.lpNavigationBarRightItemImageButton = UIImage() // TODO: add ... icon
 
         // input text box
         configurations.inputTextViewContainerBackgroundColor = getGrey(color: 242)
         configurations.inputTextViewTopBorderColor = getColor(r: 204, g: 204, b: 204)
         configurations.inputTextViewCornerRadius = 4
         configurations.isSendMessageButtonInTextMode = false
-        //configurations.sendButtonImage = UIImage() // TODO: add send icon
+        configurations.sendButtonImage = UIImage(named: "send_icon")
         configurations.sendButtonEnabledColor = uhcBlue
 
         // file and photo sharing
@@ -199,7 +199,7 @@ extension MessagingViewController {
         configurations.cameraButtonEnabledColor = uhcBlue
         configurations.photosharingMenuButtonsTextColor = UIColor.white
         configurations.photosharingMenuButtonsBackgroundColor = UIColor.white
-        //configurations.photoSharingOpenMenuImageButton = UIImage() // TODO: add paperclip icon
+        configurations.photoSharingOpenMenuImageButton = UIImage(named: "file_attachment_icon") // TODO: add paperclip icon
         
 
         // link preview
