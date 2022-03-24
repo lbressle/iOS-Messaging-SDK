@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "UHC_Logo.png",
+      "filename" : "icon_avatar_UHC_chatbot_30_30.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "UHC_Logo-1.png",
+      "filename" : "icon_avatar_UHC_chatbot_30_30-1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "UHC_Logo-2.png",
+      "filename" : "icon_avatar_UHC_chatbot_30_30-2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

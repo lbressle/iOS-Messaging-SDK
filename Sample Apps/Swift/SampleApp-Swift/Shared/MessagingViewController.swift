@@ -134,12 +134,14 @@ extension MessagingViewController {
      */
     private func setSDKConfigurations() {
         let configurations = LPConfig.defaultConfiguration
+        
+        print("CONFIGS: ",  LPConfig.printAllConfigurations())
 
         let uhcBlue = getColor(r: 0, g: 38, b: 119)
 
         // general
         configurations.conversationBackgroundColor = UIColor.white
-        configurations.isReadReceiptTextMode = true
+        configurations.csatShowSurveyView = false
         configurations.customFontNameConversationFeed = "SFProText-Regular"
 
         // conversation separator
@@ -181,8 +183,9 @@ extension MessagingViewController {
         configurations.brandName = "Help Chat"
         configurations.conversationNavigationBackgroundColor = uhcBlue
         configurations.conversationNavigationTitleColor = UIColor.white
-        configurations.lpNavigationBarLeftItemImageButton = UIImage() // TODO: add back icon
-        configurations.lpNavigationBarRightItemImageButton = UIImage() // TODO: add ... icon
+        configurations.conversationStatusBarStyle = UIStatusBarStyle.lightContent
+        // configurations.lpNavigationBarLeftItemImageButton = UIImage() // TODO: add back icon
+        // configurations.lpNavigationBarRightItemImageButton = UIImage() // TODO: add ... icon
 
         // input text box
         configurations.inputTextViewContainerBackgroundColor = getGrey(color: 242)
@@ -200,7 +203,6 @@ extension MessagingViewController {
         configurations.photosharingMenuButtonsTextColor = UIColor.white
         configurations.photosharingMenuButtonsBackgroundColor = UIColor.white
         //configurations.photoSharingOpenMenuImageButton = UIImage() // TODO: add paperclip icon
-        
 
         // link preview
         configurations.linkPreviewBackgroundColor = UIColor.white
