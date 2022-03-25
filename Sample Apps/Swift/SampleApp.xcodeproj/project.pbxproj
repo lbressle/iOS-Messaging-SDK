@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2304128127EDFF9F00DA79B5 /* LPConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304128027EDFF9F00DA79B5 /* LPConfig.swift */; };
 		6681AE522670191000A5FB8F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6681AE512670191000A5FB8F /* Toast.swift */; };
 		75F521254E4CF6079BC16C37 /* Pods_SampleApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 280FB9C7C7275FE2AFA1AA48 /* Pods_SampleApp.framework */; };
 		CD8C6B2A2031B6E8008EB94B /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8C6B292031B6E8008EB94B /* MainViewController.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2304128027EDFF9F00DA79B5 /* LPConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPConfig.swift; sourceTree = "<group>"; };
 		280FB9C7C7275FE2AFA1AA48 /* Pods_SampleApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SampleApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FDF3C54F4BBA16C7518231C /* Pods-SampleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleApp.release.xcconfig"; path = "Target Support Files/Pods-SampleApp/Pods-SampleApp.release.xcconfig"; sourceTree = "<group>"; };
 		6681AE512670191000A5FB8F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				F7D09A9425142EDE00168C3E /* MessagingViewController.xib */,
 				CD8C6B2B2031B811008EB94B /* MonitoringViewController.swift */,
 				F7D09A9525142EDE00168C3E /* MonitoringViewController.xib */,
+				2304128027EDFF9F00DA79B5 /* LPConfig.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				D62EC5B41C7C427B0001C0D4 /* SampleApp_Swift.xcdatamodeld in Sources */,
 				D62EC5AE1C7C427B0001C0D4 /* MessagingViewController.swift in Sources */,
 				CD8C6B2C2031B811008EB94B /* MonitoringViewController.swift in Sources */,
+				2304128127EDFF9F00DA79B5 /* LPConfig.swift in Sources */,
 				D62EC5D01C7C469D0001C0D4 /* ConversationViewController.swift in Sources */,
 				D62EC5AC1C7C427B0001C0D4 /* AppDelegate.swift in Sources */,
 				CD8C6B2A2031B6E8008EB94B /* MainViewController.swift in Sources */,
