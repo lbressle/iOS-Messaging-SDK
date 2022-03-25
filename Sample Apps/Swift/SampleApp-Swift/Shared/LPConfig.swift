@@ -20,6 +20,15 @@ private func getColor(r: Int, g: Int, b: Int) -> UIColor {
     return UIColor.init(red: CGFloat(r) / 255.0, green: CGFloat(g) / 255.0, blue: CGFloat(b) / 255.0, alpha: 1)
 }
 
+/**
+     This method sets the SDK configurations.
+
+     For example:
+         Change background color of remote user (such as Agent)
+         Change background color of user (such as Consumer)
+
+    for more information on `defaultConfiguration` see: https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-customization-and-branding-customizing-the-sdk.html
+*/
 public func setLPConfigs(){
     setBrandConfig(configurations: configurations)
     setConversationConfig(configurations: configurations)

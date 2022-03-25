@@ -58,7 +58,7 @@ class MessagingViewController: UIViewController {
         self.authenticationSwitch.isOn = authenticationSwitchValue
 
         LPMessaging.instance.delegate = self
-        self.setSDKConfigurations()
+        setLPConfigs()
         LPMessaging.instance.setLoggingLevel(level: .INFO)
     }
 
@@ -123,19 +123,6 @@ class MessagingViewController: UIViewController {
 
 // MARK: - LPMessagingSDK Helpers
 extension MessagingViewController {
-    /**
-     This method sets the SDK configurations.
-
-     For example:
-         Change background color of remote user (such as Agent)
-         Change background color of user (such as Consumer)
-
-    for more information on `defaultConfiguration` see: https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-customization-and-branding-customizing-the-sdk.html
-     */
-    private func setSDKConfigurations() {
-        setLPConfigs()
-    }
-
     private func getUnreadMessageCount() {
         guard let accountNumber = self.accountTextField.text, !accountNumber.isEmpty else {
             print("missing account number!")
