@@ -289,8 +289,8 @@ extension MessagingViewController: LPMessagingSDKdelegate {
             return
         }
 
-        let name: String = agent?.nickName ?? "Help Chat"
-        self.conversationViewController?.title = name
+        //let name: String = agent?.nickName ?? "Help Chat"
+        //self.conversationViewController?.title = name
     }
 
     /**
