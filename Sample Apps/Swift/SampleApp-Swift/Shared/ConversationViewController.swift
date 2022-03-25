@@ -55,25 +55,25 @@ class ConversationViewController: UIViewController {
         }
 
         //urgent option
-        let urgentTitle = LPMessaging.instance.isUrgent(conversationQuery) ? "Dismiss Urgent" : "Mark as Urgent"
+        //let urgentTitle = LPMessaging.instance.isUrgent(conversationQuery) ? "Dismiss Urgent" : "Mark as Urgent"
 
         /**
         This is how to manage the urgency state of the conversation
         */
-        let urgentAction = UIAlertAction(title: urgentTitle, style: .default) { (alert: UIAlertAction) -> Void in
+        /*let urgentAction = UIAlertAction(title: urgentTitle, style: .default) { (alert: UIAlertAction) -> Void in
             if LPMessaging.instance.isUrgent(conversationQuery) {
                 LPMessaging.instance.dismissUrgent(conversationQuery)
             } else {
                 LPMessaging.instance.markAsUrgent(conversationQuery)
             }
-        }
+        }*/
         
         
         //cancel option
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
         alertController.addAction(resolveAction)
-        alertController.addAction(urgentAction)
+        //alertController.addAction(urgentAction)
         alertController.addAction(cancelAction)
         
         self.present(alertController, animated: true, completion: nil)

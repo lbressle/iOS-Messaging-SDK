@@ -140,7 +140,7 @@ private func setInputBoxConfig(configurations: LPConfig){
  */
 private func setSendButtonConfig(configurations: LPConfig){
     configurations.isSendMessageButtonInTextMode = false
-    configurations.sendButtonImage = UIImage(named: "paper-plane-regular")
+    configurations.sendButtonImage = UIImage(named: "send_icon_alt")
     configurations.sendButtonEnabledColor = uhcBlue
 }
 
