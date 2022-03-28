@@ -59,6 +59,7 @@ private func setBrandConfig(configurations: LPConfig){
     configurations.brandName = "Help Chat"
     configurations.conversationNavigationBackgroundColor = uhcBlue
     configurations.conversationNavigationTitleColor = UIColor.white
+    configurations.lpNavigationBarLeftItemImageButton = UIImage(named: "backIcon")
     configurations.lpNavigationBarRightItemImageButton = UIImage(named: "meatball")
 }
 
