@@ -41,12 +41,15 @@ class MessagingViewController: UIViewController {
         super.viewDidLoad()
 
         // Enter Your Account Number
-        self.accountTextField.text = "ENTER_ACCOUNT_NUMBER"
+        self.accountTextField.text = "74782401"
         self.authenticationSwitch.isOn = authenticationSwitchValue
 
         LPMessaging.instance.delegate = self
         setLPConfigs()
         LPMessaging.instance.setLoggingLevel(level: .INFO)
+        
+        //bypass login screen
+        showConversation()
     }
 
     //MARK: - IBActions
@@ -190,8 +193,8 @@ extension MessagingViewController {
          https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-sdk-apis-messaging-api.html#setuserprofile
      */
     private func setUserDetails() {
-        let user = LPUser(firstName: self.firstNameTextField.text!,
-                          lastName: self.lastNameTextField.text!,
+        let user = LPUser(firstName: "Chris",
+                          lastName: "S",
                 nickName: "my nick name",
                 uid: nil,
                 profileImageURL: "http://www.mrbreakfast.com/ucp/342_6053_ucp.jpg",
