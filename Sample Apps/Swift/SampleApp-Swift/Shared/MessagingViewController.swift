@@ -41,7 +41,7 @@ class MessagingViewController: UIViewController {
         super.viewDidLoad()
 
         // Enter Your Account Number
-        self.accountTextField.text = "74782401"
+        self.accountTextField.text = "ENTER_ACCOUNT_NUMBER"
         self.authenticationSwitch.isOn = authenticationSwitchValue
 
         LPMessaging.instance.delegate = self
@@ -190,8 +190,8 @@ extension MessagingViewController {
          https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-sdk-apis-messaging-api.html#setuserprofile
      */
     private func setUserDetails() {
-        let user = LPUser(firstName: "Johnny",
-                lastName: "S",
+        let user = LPUser(firstName: self.firstNameTextField.text!,
+                          lastName: self.lastNameTextField.text!,
                 nickName: "my nick name",
                 uid: nil,
                 profileImageURL: "http://www.mrbreakfast.com/ucp/342_6053_ucp.jpg",
@@ -247,12 +247,7 @@ extension MessagingViewController: LPMessagingSDKdelegate {
     You can use this data to show the agent details on your navigation bar (in view controller mode)
     */
     func LPMessagingSDKAgentDetails(_ agent: LPUser?) {
-        guard self.conversationViewController != nil else {
-            return
-        }
-
-        //let name: String = agent?.nickName ?? "Help Chat"
-        //self.conversationViewController?.title = name
+       
     }
 
     /**
