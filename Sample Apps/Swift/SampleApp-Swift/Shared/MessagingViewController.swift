@@ -15,19 +15,7 @@ class MessagingViewController: UIViewController {
     @IBOutlet var accountTextField: UITextField!
     @IBOutlet var firstNameTextField: UITextField!
     @IBOutlet var lastNameTextField: UITextField!
-    @IBOutlet var windowSwitch: UISwitch!
     @IBOutlet var authenticationSwitch: UISwitch!
-
-    //MARK: - Properties
-    private var windowSwitchValue: Bool {
-        set {
-            UserDefaults.standard.set(newValue, forKey: "WindowSwitch")
-            UserDefaults.standard.synchronize()
-        }
-        get {
-            return UserDefaults.standard.bool(forKey: "WindowSwitch")
-        }
-    }
 
     private var authenticationSwitchValue: Bool {
         set {
@@ -39,7 +27,8 @@ class MessagingViewController: UIViewController {
         }
     }
 
-    private var conversationViewController: ConversationViewController?
+    // always set to window mode
+    private var conversationViewController: ConversationViewController? = nil
 
     // Enter Your Code if using Autherization type 'Code'
     private let authenticationCode: String? = nil
@@ -53,8 +42,6 @@ class MessagingViewController: UIViewController {
 
         // Enter Your Account Number
         self.accountTextField.text = "74782401"
-
-        self.windowSwitch.isOn = windowSwitchValue
         self.authenticationSwitch.isOn = authenticationSwitchValue
 
         LPMessaging.instance.delegate = self
@@ -65,10 +52,6 @@ class MessagingViewController: UIViewController {
     //MARK: - IBActions
     @IBAction func resignKeyboard() {
         self.view.endEditing(true)
-    }
-
-    @IBAction func windowSwitchChanged(_ sender: UISwitch) {
-        windowSwitchValue = sender.isOn
     }
 
     @IBAction func authenticationSwitchChanged(_ sender: UISwitch) {
@@ -98,22 +81,7 @@ class MessagingViewController: UIViewController {
             return
         }
 
-        //Window Mode
-        if windowSwitchValue {
-            self.conversationViewController = nil
-        } else {
-            //for ViewController Mode ONLY
-            self.conversationViewController = ConversationViewController()
-            self.conversationViewController?.accountNumber = accountNumber
-            self.conversationViewController?.conversationQueryProtocol = LPMessaging.instance.getConversationBrandQuery(accountNumber)
-        }
-
         showConversationFor(accountNumber: accountNumber, authenticatedMode: authenticationSwitchValue)
-
-        //do not forget to push the controller (for ViewController Mode ONLY)
-        if self.conversationViewController != nil {
-            self.navigationController?.pushViewController(self.conversationViewController!, animated: true)
-        }
     }
 
     @IBAction func logoutClicked(_ sender: Any) {
@@ -182,12 +150,6 @@ extension MessagingViewController {
                     redirectURI: nil,
                     certPinningPublicKeys: nil,
                     authenticationType: .authenticated)
-        }
-
-        // update Account number and ConversationQuery (for ViewController Mode ONLY)
-        if self.conversationViewController != nil {
-            self.conversationViewController?.accountNumber = accountNumber
-            self.conversationViewController?.conversationQueryProtocol = conversationQuery
         }
 
         //LPWelcomeMessageParam
