@@ -36,19 +36,33 @@ class MessagingViewController: UIViewController {
     // Enter Your JWT if using Autherization type 'Implicit'
     private let authenticationJWT: String? = nil
 
+    private let accountNumber = "74782401"
+
+    /**
+        User information
+
+        For more info see:
+         https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-sdk-apis-messaging-api.html#setuserprofile
+     */
+    private let user = LPUser(firstName: "Chris",
+                          lastName: "S",
+                nickName: "my nick name",
+                uid: nil,
+                profileImageURL: "http://www.mrbreakfast.com/ucp/342_6053_ucp.jpg",
+                phoneNumber: nil,
+                employeeID: "1111-1111")
+
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Enter Your Account Number
-        self.accountTextField.text = "74782401"
         self.authenticationSwitch.isOn = authenticationSwitchValue
 
         LPMessaging.instance.delegate = self
         setLPConfigs()
         LPMessaging.instance.setLoggingLevel(level: .INFO)
-        
-        //bypass login screen
+
+        // bypass login screen
         showConversation()
     }
 
@@ -66,12 +80,7 @@ class MessagingViewController: UIViewController {
             self.view.endEditing(true)
         }
 
-        guard let accountNumber = self.accountTextField.text, !accountNumber.isEmpty else {
-            print("missing account number!")
-            return
-        }
-
-        initLPSDKwith(accountNumber: accountNumber)
+        initLPSDKwith(accountNumber: self.accountNumber)
     }
 
     @IBAction func showConversation() {
@@ -79,12 +88,7 @@ class MessagingViewController: UIViewController {
             self.view.endEditing(true)
         }
 
-        guard let accountNumber = self.accountTextField.text, !accountNumber.isEmpty else {
-            print("missing account number!")
-            return
-        }
-
-        showConversationFor(accountNumber: accountNumber, authenticatedMode: authenticationSwitchValue)
+        showConversationFor(accountNumber: self.accountNumber, authenticatedMode: authenticationSwitchValue)
     }
 
     @IBAction func logoutClicked(_ sender: Any) {
@@ -95,12 +99,7 @@ class MessagingViewController: UIViewController {
 // MARK: - LPMessagingSDK Helpers
 extension MessagingViewController {
     private func getUnreadMessageCount() {
-        guard let accountNumber = self.accountTextField.text, !accountNumber.isEmpty else {
-            print("missing account number!")
-            return
-        }
-
-        let conversationQuery = LPMessaging.instance.getConversationBrandQuery(accountNumber)
+        let conversationQuery = LPMessaging.instance.getConversationBrandQuery(self.accountNumber)
         LPMessaging.instance.getUnreadMessagesCount(conversationQuery, completion: { (count) in
                     print("unread message count: \(count)")
                 }) { (error) in
@@ -184,23 +183,7 @@ extension MessagingViewController {
 
         LPMessaging.instance.showConversation(conversationViewParams, authenticationParams: authenticationParams)
 
-        self.setUserDetails()
-    }
-    /**
-     This method sets the user details such as first name, last name, profile image and phone number.
-
-     for more info on `setUserProfile` see:
-         https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-sdk-apis-messaging-api.html#setuserprofile
-     */
-    private func setUserDetails() {
-        let user = LPUser(firstName: "Chris",
-                          lastName: "S",
-                nickName: "my nick name",
-                uid: nil,
-                profileImageURL: "http://www.mrbreakfast.com/ucp/342_6053_ucp.jpg",
-                phoneNumber: nil,
-                employeeID: "1111-1111")
-        LPMessaging.instance.setUserProfile(user, brandID: self.accountTextField.text!)
+        LPMessaging.instance.setUserProfile(self.user, brandID: self.accountNumber)
     }
 
     /**
@@ -250,7 +233,7 @@ extension MessagingViewController: LPMessagingSDKdelegate {
     You can use this data to show the agent details on your navigation bar (in view controller mode)
     */
     func LPMessagingSDKAgentDetails(_ agent: LPUser?) {
-       
+
     }
 
     /**
