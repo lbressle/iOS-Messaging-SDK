@@ -59,7 +59,7 @@ private func setBrandConfig(configurations: LPConfig){
     configurations.brandName = "Help Chat"
     configurations.conversationNavigationBackgroundColor = uhcBlue
     configurations.conversationNavigationTitleColor = UIColor.white
-    // configurations.lpNavigationBarLeftItemImageButton = UIImage(named: "back_icon") // TODO: Add back icon
+    configurations.lpNavigationBarLeftItemImageButton = UIImage(named: "backIcon")
     configurations.lpNavigationBarRightItemImageButton = UIImage(named: "meatball")
 }
 
@@ -119,9 +119,11 @@ private func setSharingConfig(configurations: LPConfig){
     configurations.cameraButtonEnabledColor = uhcBlue
     configurations.photosharingMenuButtonsTextColor = UIColor.white
     configurations.photosharingMenuButtonsBackgroundColor = UIColor.white
-    configurations.photoSharingOpenMenuImageButton = UIImage(named: "file_attachment_icon")
+    configurations.photoSharingOpenMenuImageButton = UIImage(named: "attachmentIcon")
+    configurations.photoSharingMenuLibraryImage = UIImage(named: "photoIcon")
     configurations.photoSharingMenuCameraImage = UIImage(named: "cameraIcon")
     configurations.fileSharingMenuFileImage = UIImage(named: "documentIcon")
+    configurations.photoSharingCloseMenuImageButton = UIImage(named: "closeIcon")
 }
 
 /**
@@ -140,7 +142,7 @@ private func setInputBoxConfig(configurations: LPConfig){
  */
 private func setSendButtonConfig(configurations: LPConfig){
     configurations.isSendMessageButtonInTextMode = false
-    configurations.sendButtonImage = UIImage(named: "send_icon_alt")
+    configurations.sendButtonImage = UIImage(named: "send_icon")
     configurations.sendButtonEnabledColor = uhcBlue
 }
 
