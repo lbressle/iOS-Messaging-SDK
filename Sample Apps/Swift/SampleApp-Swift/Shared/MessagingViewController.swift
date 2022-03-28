@@ -10,32 +10,13 @@ import UIKit
 import LPMessagingSDK
 
 class MessagingViewController: UIViewController {
-
-    //MARK: - UI Properties
-    @IBOutlet var accountTextField: UITextField!
-    @IBOutlet var firstNameTextField: UITextField!
-    @IBOutlet var lastNameTextField: UITextField!
-    @IBOutlet var authenticationSwitch: UISwitch!
-
-    private var authenticationSwitchValue: Bool {
-        set {
-            UserDefaults.standard.set(newValue, forKey: "AuthenticationSwitch")
-            UserDefaults.standard.synchronize()
-        }
-        get {
-            return UserDefaults.standard.bool(forKey: "AuthenticationSwitch")
-        }
-    }
-
-    // always set to window mode
-    private var conversationViewController: ConversationViewController? = nil
-
     // Enter Your Code if using Autherization type 'Code'
     private let authenticationCode: String? = nil
 
     // Enter Your JWT if using Autherization type 'Implicit'
     private let authenticationJWT: String? = nil
 
+    // LP Account Number
     private let accountNumber = "74782401"
 
     /**
@@ -56,43 +37,12 @@ class MessagingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.authenticationSwitch.isOn = authenticationSwitchValue
-
         LPMessaging.instance.delegate = self
         setLPConfigs()
         LPMessaging.instance.setLoggingLevel(level: .INFO)
 
         // bypass login screen
-        showConversation()
-    }
-
-    //MARK: - IBActions
-    @IBAction func resignKeyboard() {
-        self.view.endEditing(true)
-    }
-
-    @IBAction func authenticationSwitchChanged(_ sender: UISwitch) {
-        authenticationSwitchValue = sender.isOn
-    }
-
-    @IBAction func initSDKsClicked(_ sender: Any) {
-        defer {
-            self.view.endEditing(true)
-        }
-
-        initLPSDKwith(accountNumber: self.accountNumber)
-    }
-
-    @IBAction func showConversation() {
-        defer {
-            self.view.endEditing(true)
-        }
-
-        showConversationFor(accountNumber: self.accountNumber, authenticatedMode: authenticationSwitchValue)
-    }
-
-    @IBAction func logoutClicked(_ sender: Any) {
-        logoutLPSDK()
+        showConversationFor(accountNumber: self.accountNumber, authenticatedMode: false)
     }
 }
 
@@ -105,20 +55,6 @@ extension MessagingViewController {
                 }) { (error) in
                     print("unread message count - error: \(error.localizedDescription)")
                 }
-    }
-
-    /**
-     This method initialize the messaging SDK
-
-     for more information on `initialize` see:
-         https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-sdk-apis-messaging-api.html#initialize
-     */
-    private func initLPSDKwith(accountNumber: String) {
-        do {
-            try LPMessaging.instance.initialize(accountNumber)
-        } catch let error as NSError {
-            print("initialize error: \(error)")
-        }
     }
 
     /**
@@ -145,14 +81,14 @@ extension MessagingViewController {
                 historyMaxDaysType: .startConversationDate)
 
         //LPAuthenticationParams
-        var authenticationParams: LPAuthenticationParams?
-        if authenticatedMode {
-            authenticationParams = LPAuthenticationParams(authenticationCode: authenticationCode,
-                    jwt: authenticationJWT,
-                    redirectURI: nil,
-                    certPinningPublicKeys: nil,
-                    authenticationType: .authenticated)
-        }
+        //        let authenticationParams: LPAuthenticationParams?
+        //        if authenticatedMode {
+        //            authenticationParams = LPAuthenticationParams(authenticationCode: authenticationCode,
+        //                    jwt: authenticationJWT,
+        //                    redirectURI: nil,
+        //                    certPinningPublicKeys: nil,
+        //                    authenticationType: .authenticated)
+        //        }
 
         //LPWelcomeMessageParam
         let lpWelcomeText = "Hello! I'm a UnitedHealthcare virtual assistant here to get you started. How can I help you today?"
@@ -176,28 +112,14 @@ extension MessagingViewController {
 
         //LPConversationViewParams
         let conversationViewParams = LPConversationViewParams(conversationQuery: conversationQuery,
-                containerViewController: self.conversationViewController,
+                containerViewController: nil,
                 isViewOnly: false,
                 conversationHistoryControlParam: controlParam,
                 welcomeMessage: welcomeMessageParam)
 
-        LPMessaging.instance.showConversation(conversationViewParams, authenticationParams: authenticationParams)
+        LPMessaging.instance.showConversation(conversationViewParams, authenticationParams: nil)
 
         LPMessaging.instance.setUserProfile(self.user, brandID: self.accountNumber)
-    }
-
-    /**
-     This method logouts from Monitoring and Messaging SDKs - all the data will be cleared
-
-     for more info on `logout` see:
-         https://developers.liveperson.com/mobile-app-messaging-sdk-for-ios-methods-logout.html
-     */
-    private func logoutLPSDK() {
-        LPMessaging.instance.logout(unregisterType: .all, completion: {
-                    print("successfully logout from MessagingSDK")
-                }) { (errors) in
-                    print("failed to logout from MessagingSDK - error: \(errors)")
-                }
     }
 }
 
